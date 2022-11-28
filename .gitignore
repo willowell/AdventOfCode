@@ -1,0 +1,12 @@
+# Do not include session tokens
+aoc.toml
+aoc.yaml
+
+# Do not include input as input is personalized
+input/
+
+# Do not include misc file system stuff
+.DS_Store
+
+# Do not include Rust's output for the Cargo workspace
+target

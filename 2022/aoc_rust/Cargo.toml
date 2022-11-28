@@ -1,0 +1,90 @@
+[package]
+name = "aoc_rust"
+description = "Classic Computer Science Problems in Rust"
+version = "0.1.0"
+edition = "2021"
+license = "AGPL-3.0-or-later"
+repository = "https://github.com/willowell/aoc"
+# See `src/main.rs` for this program entrypoint.
+default-run = "aoc_rust"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+# Bit Fields
+# https://crates.io/crates/bitvec
+bitvec = "1.0.1"
+
+# Command Line Argument Parser
+# https://crates.io/crates/clap
+clap = { version = "4.0.26",  features = ["derive"] }
+
+# Pretty console output!
+# https://crates.io/crates/console
+console = "0.15.2"
+
+# Generic traits over Rust collections.
+# https://crates.io/crates/gcollections
+gcollections = "1.5.0"
+
+# Swiss army knife of iterator tools, not unlike Python's `itertools` module
+# https://crates.io/crates/itertools
+itertools = "0.10.5"
+
+# Generic intervals.
+# https://crates.io/crates/intervallum
+intervallum = "1.4.0"
+
+# Constraint programming library
+# https://crates.io/crates/libpcp
+libpcp = "0.6.4"
+
+# Memoization macro
+# https://crates.io/crates/memoize
+memoize = "0.3.1"
+
+# Parser combinators
+# https://crates.io/crates/nom
+nom = "7.1.1"
+
+# Float newtype that excludes NaN, allowing for implementations of `Eq` and `Ord`.
+#
+# This is especially important for the A* implementation in Chapter 2. `std::collections::HashMap`
+# requires that the value be totally ordered (PartialEq + Eq + PartialOrd + Ord), but `f32` and `f64`
+# cannot fulfill this as-is because `NaN != NaN`, which breaks `Eq` and `Ord`.
+#
+# https://crates.io/crates/ordered-float
+ordered-float = "3.3.0"
+
+# Various pathfinding algorithms, e.g., BFS, DFS, Djikstra, A-Star
+# https://crates.io/crates/pathfinding
+pathfinding = "3.0.14"
+
+# Graph data structure library.
+# https://crates.io/crates/petgraph
+petgraph = "0.6.2"
+
+# Random number generators
+# https://crates.io/crates/rand
+rand = "0.8.5"
+
+# Parallel iterators
+# https://crates.io/crates/rayon
+rayon = "1.5.3"
+
+# High-level HTTP Client like `fetch`
+# https://crates.io/crates/reqwest
+reqwest = "0.11.13"
+
+# Data serialization and deserialization
+# https://crates.io/crates/serde
+serde = { version = "1.0.147", features = ["derive"] }
+
+# YAML readers and writers for Serde
+# https://crates.io/crates/serde_yaml
+serde_yaml = "0.9.14"
+
+# Async runtime
+# https://crates.io/crates/tokio
+tokio = { version = "1.22.0", features = ["full"] }
