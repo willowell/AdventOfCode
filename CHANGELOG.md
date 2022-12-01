@@ -2,6 +2,25 @@
 
 Please note that the dates are listed with most recent first.
 
+## 2022-12-01
+
+### AOC 2022
+
+It's show time!
+
+#### Haskell
+
+* Implemented solution for Day 1.
+* Adjusted doc comment for `Solution` in `Solution.hs`.
+
+## 2022-11-30
+
+### AOC 2022
+
+#### Rust
+
+* Scaffolded the Rust implementation using the Haskell implementation as a guide. The Rust implementation is not ready for Advent of Code yet, but it *could* be soon.
+
 ## 2022-11-28
 
 ### AOC 2021
@@ -10,7 +29,7 @@ Please note that the dates are listed with most recent first.
 
 * Added AGPLv3 license to whole project. Since Rust (and potentially GHC Haskell in the near future) can be compiled to WASM and therefore used on the web, this ensures the spirit of the GPLv3 is maintained when used on a website.
 
-### Haskell
+#### Haskell
 
 * Copied Haskell implementation from https://github.com/Solonarv/adventofcode-2021
 * Replaced GPLv3 license with AGPLv3 license.

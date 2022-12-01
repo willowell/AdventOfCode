@@ -17,7 +17,7 @@ displayPart PartB = 'b'
 {- | Solution
 
 Solution Datatype, taking three types:
-* `i` - the type of the input, e.g., `String`
+* `i` - the type of the output from the parser and the input for Parts A and B, e.g., `String`.
 * `a` - the type of the output for Part A, e.g., `Int`
 * `b` - the type of the output for Part B, e.g., `Boolean`
 
@@ -45,7 +45,7 @@ solution = Solution
 
 -}
 data Solution
-  i -- ^ Input
+  i -- ^ Part A and B Input, as well as Parser Output
   a -- ^ Part A Output
   b -- ^ Part B Output
   = Solution

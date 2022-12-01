@@ -36,7 +36,6 @@ common deps
     , lens
     , finite-typelits
     , comonad
-    , monad-loops
     , regex-applicative
     , vector-algorithms
 
