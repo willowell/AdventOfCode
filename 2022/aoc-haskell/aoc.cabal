@@ -20,23 +20,85 @@ common deps
   build-depends:
       -- GHC 9.2.x, 9.4.x
       base >=4.16 && <5
+
+    -- JSON decoding and encoding
+    -- https://hackage.haskell.org/package/aeson
     , aeson
-    , containers
-    , vector
+
+    -- Byte strings
+    -- https://hackage.haskell.org/package/bytestring
     , bytestring
-    , text
-    , unordered-containers
-    , megaparsec
-    , parser-combinators
-    , linear
-    , split
-    , conduit
-    , mtl
-    , monad-loops
-    , lens
-    , finite-typelits
+
+    -- Comonads
+    -- https://hackage.haskell.org/package/comonad
     , comonad
+
+    -- Streaming data processing library
+    -- https://hackage.haskell.org/package/conduit
+    , conduit
+
+    -- Assorted concrete container types
+    -- e.g., `Graph`, `Map`, `Sequence`, `Set`, and `Tree`
+    -- https://hackage.haskell.org/package/containers
+    , containers
+
+    -- Finite number type, e.g., `type Day = Finite 25`
+    -- https://hackage.haskell.org/package/finite-typelits
+    , finite-typelits
+
+    -- Lenses, Folds, and Traversals
+    -- Most notably, allows for an imperative-ish interface for deeply nested structures
+    -- https://hackage.haskell.org/package/lens
+    , lens
+
+    -- Linear Algebra
+    -- Vectors, Matrices, etc.
+    -- https://hackage.haskell.org/package/linear
+    , linear
+
+    -- Industrial-strength monadic parser combinators
+    -- Combined with `parser-combinators`, provides an
+    -- easy and delightful interface for parsing characters.
+    -- https://hackage.haskell.org/package/megaparsec
+    , megaparsec
+
+    -- Monad Loops
+    -- https://hackage.haskell.org/package/monad-loops
+    , monad-loops
+
+    -- Monad Transformer Library
+    -- https://hackage.haskell.org/package/mtl
+    , mtl
+
+    -- Parser Combinators
+    -- https://hackage.haskell.org/package/parser-combinators
+    , parser-combinators
+
+    -- Applicative interface for building Regex
+    -- https://hackage.haskell.org/package/regex-applicative
     , regex-applicative
+
+    -- Combinators for splitting lists.
+    -- There is some overlap with `parser-combinators`.
+    -- https://hackage.haskell.org/package/split
+    , split
+
+    -- Efficient packed Unicode text type.
+    -- Typically better-suited for text than Haskell's `String` type.
+    -- https://hackage.haskell.org/package/text
+    , text
+
+    -- Hash-based container types
+    -- e.g., `HashMap` and `HashSet`.
+    -- https://hackage.haskell.org/package/unordered-containers
+    , unordered-containers
+
+    -- Efficient arrays
+    -- https://hackage.haskell.org/package/vector
+    , vector
+
+    -- Efficient algorithms for efficient arrays!
+    -- https://hackage.haskell.org/package/vector-algorithms
     , vector-algorithms
 
 common lang
@@ -97,14 +159,39 @@ library
     , AOC.Harness
   build-depends:
       util
-    , optparse-applicative
+    -- Terminal colors!
+    -- https://hackage.haskell.org/package/ansi-terminal
     , ansi-terminal
-    , directory
-    , yaml
-    , req
-    , http-client
-    , time
+
+    -- `Default` typeclass
+    -- https://hackage.haskell.org/package/data-default
     , data-default
+
+    -- Platform-agnostic filesystem operations
+    -- https://hackage.haskell.org/package/directory
+    , directory
+
+    -- Low-level HTTP Client
+    -- https://hackage.haskell.org/package/http-client
+    , http-client
+
+    -- Applicative command line options parser
+    -- https://hackage.haskell.org/package/optparse-applicative
+    , optparse-applicative
+
+    -- High-level HTTP Client Library
+    -- https://hackage.haskell.org/package/req
+    , req
+
+    -- Time library
+    -- https://hackage.haskell.org/package/time
+    , time
+
+    -- YAML parser and writer.
+    -- Can bridge to Aeson.
+    -- https://hackage.haskell.org/package/yaml
+    , yaml
+    
   ghc-options:
     -Wno-orphans
 
@@ -119,11 +206,20 @@ library util
     , RatAngle
     , Util
   build-depends:
+    -- Primitive memory-related operations
+    -- https://hackage.haskell.org/package/primitive
     primitive
 
 library solutions
   import: deps, lang
   exposed-modules:
-      Day01
+      Day00
+    , Day01
+    , Day02
+    , Day03
+    , Day04
+    , Day05
+    , Day06
+    , Day07
   hs-source-dirs: solutions
   build-depends: aoc, util

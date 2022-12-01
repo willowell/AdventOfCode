@@ -12,6 +12,8 @@ It's show time!
 
 * Implemented solution for Day 1.
 * Adjusted doc comment for `Solution` in `Solution.hs`.
+* Scaffolded empty solution files for days 2 through 7, including a template "Day 0".
+* Alphabetized `build-depends` field in `aoc.cabal` and added comments and links for the dependencies.
 
 ## 2022-11-30
 
