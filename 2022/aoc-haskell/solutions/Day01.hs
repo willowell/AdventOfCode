@@ -22,21 +22,16 @@ solution = Solution
           Which elf is carrying the most calories?
           How many calories are they carrying?
         -}
-        solve = Just . maximum . map sum
+        solve = Just . top 1
       }
     , solveB = defSolver
       {
         {- | Part B Solver
           Repeat Part A, but this time for the top three elves.
         -}
-        solve =
-          Just
-          . sum
-          . take 3            -- take the top three
-          . sortBy descending
-          . map sum          -- sum up the sub-lists
+        solve = Just . top 3
         -- Alternative point-ful version:
-        -- solve xs = Just <| sum <| take 3 <| sortBy descending <| map sum xs
+        -- solve xs = Just <| sum <| top 3 xs
       }
     , tests =
       [
@@ -61,3 +56,5 @@ solution = Solution
   where
     numberLines = decimal `sepEndBy1` eol     -- list of numbers optionally separated by CRLF
     elfCalories = numberLines `sepEndBy1` eol -- list of ^ optionally separated by CRLF
+    top 1 = maximum . map sum
+    top n = sum . take n . sortBy descending . map sum

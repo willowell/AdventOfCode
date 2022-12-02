@@ -2,6 +2,15 @@
 
 Please note that the dates are listed with most recent first.
 
+## 2022-12-02
+
+### AOC 2022
+
+#### Haskell
+
+* Implemented solution for Day 2.
+* TBD - will fill this out more later.
+
 ## 2022-12-01
 
 ### AOC 2022
