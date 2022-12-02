@@ -11,6 +11,18 @@ Please note that the dates are listed with most recent first.
 * Implemented solution for Day 2.
 * TBD - will fill this out more later.
 
+### AOC 2020
+
+#### Haskell
+
+* Started migrating my old solutions to this new template.
+
+At the time, I implemented my AOC 2020 solutions using Stack and without any parser combinators, as I was not familiar with using Cabal on its own and with using `Control.Monad.Combinators` or `Megaparsec` at the time.
+
+Instead, I used Regex, and as you can imagine, my solutions turned out really messy on the passport validation and luggage puzzles.
+
+I plan on revisiting these solutions and migrating them to using parser combinators, minding "parse, don't validate" along the way.
+
 ## 2022-12-01
 
 ### AOC 2022
