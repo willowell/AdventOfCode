@@ -4,6 +4,7 @@ module ParsingPrelude
   , module Text.Megaparsec
   , module Text.Megaparsec.Char
   , module Text.Megaparsec.Char.Lexer
+  , module Text.Megaparsec.Debug
 ) where
 
 import Control.Monad
@@ -17,6 +18,7 @@ import qualified Data.Set as Set
 import Text.Megaparsec hiding (Stream(..), State(..))
 import Text.Megaparsec.Char
 import Text.Megaparsec.Char.Lexer (decimal, binary, octal, hexadecimal, scientific, float, signed, lexeme)
+import Text.Megaparsec.Debug
 import Text.Megaparsec.Stream (Token)
 
 import Util (guarding, within)

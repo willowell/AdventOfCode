@@ -220,7 +220,7 @@ runTestsOn day sln@Solution{tests,decodeInput} parts = do
     let (dyns, input, expected) = processTest thisTest
     fgColor Ansi.Vivid Ansi.Blue
     printf "  Test #%v\n" n
-    case parse (decodeInput <* eof) "<test input>" . List.dropWhile isSpace . List.dropWhileEnd isSpace $ input of
+    case parse (decodeInput <* eof) "<test input>" {- . List.dropWhile isSpace -} . List.dropWhileEnd isSpace $ input of
       Left err -> do
         fgColor Ansi.Dull Ansi.Red
         printf "    Couldn't decode test input.\n"
