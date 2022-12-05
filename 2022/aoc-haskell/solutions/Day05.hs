@@ -6,50 +6,52 @@ import Data.List
 import Data.Maybe
 import Util
 
-import qualified Data.Vector.Mutable  as MVec
+import Debug.Trace
 
 type Instruction = (Int, Int, Int)
 
-data Procedure = Procedure { stacks :: [[Char]], instructions :: [Instruction] }
+data Procedure = Procedure { stacks :: [(Int, [Char])], instructions :: [Instruction] }
 
 prettyPrintProcedure p =
   "Stacks: `" <> (show $ stacks p) <> "`\nInstructions: `" <> (show $ instructions p) <> "`."
 
-replaceStack :: [[Char]] -> [Char] -> [Char] -> [[Char]]
-replaceStack stacks stack newStack = map (\s -> if s == stack then newStack else s) stacks
+replaceStack :: [(Int, [Char])] -> Int -> [Char] -> [(Int, [Char])]
+replaceStack stacks stack newStack = map (\s@(i, _) -> if i == stack then (i, newStack) else s) stacks
 
-rearrange :: [[Char]] -> Int -> Int -> Int -> [[Char]]
+rearrange :: [(Int, [Char])] -> Int -> Int -> Int -> [(Int, [Char])]
 rearrange stacks numCrates from to =
-  let fromStack = stacks !! (from - 1) in
-  let toStack = stacks !! (to - 1) in
+  let fromIndex = from - 1 in
+  let toIndex = to - 1 in
 
-  let movedCrates = take numCrates fromStack in
+  let fromStack = stacks !! fromIndex in
+  let toStack = stacks !! toIndex in
 
-  let oldStack = drop numCrates fromStack in
+  let movedCrates = take numCrates $ snd fromStack in
 
-  let newStack = reverse movedCrates <> toStack in
+  let oldStack = drop numCrates $ snd fromStack in
 
-  let stacksWithReplacedTo = replaceStack stacks toStack newStack in
-    replaceStack stacksWithReplacedTo fromStack oldStack
+  let newStack = reverse movedCrates <> snd toStack in
 
-getTopCrates :: [[Char]] -> [Char]
-getTopCrates stacks = map head stacks
+  let s = replaceStack stacks from oldStack in
 
-runInstructions :: Procedure -> [[Char]]
+  trace ("INS: MOVE " <> show numCrates <> " FROM " <> show from <> " TO " <> show to)
+  traceShow fromStack
+  traceShow toStack
+  trace ("MOVED: " <> show movedCrates)
+  trace ("OLD STACK IS NOW: " <> show oldStack)
+  trace ("NEW STACK IS NOW: " <> show newStack)
+
+  replaceStack s to newStack
+
+getTopCrates :: [(Int, [Char])] -> [Char]
+getTopCrates stacks = map head $ map snd stacks
+
+runInstructions :: Procedure -> [(Int, [Char])]
 runInstructions p =
   let ins = instructions p in
   let startingStacks = stacks p in
     foldl
     (\curStacks (numCrates, from, to) -> rearrange curStacks numCrates from to )
-    startingStacks
-    ins
-
-runInstructions' :: Foldable t => [[Char]] -> t (Int, Int, Int) -> [[Char]]
-runInstructions' stacks instructions =
-  let ins = instructions in
-  let startingStacks = stacks in
-    foldl
-    (\curStacks (numCrates, from, to) -> rearrange curStacks numCrates from to)
     startingStacks
     ins
 
@@ -139,7 +141,7 @@ solution = Solution
     pProcedure = do
       maybeStacks <- (someTill (pStack <* eol) pNumberLabels) <?> "stacks"
 
-      let stacks = map reverse $ map catMaybes $ transpose . reverse $ maybeStacks
+      let stacks = zip [1..] $ map reverse $ map catMaybes $ transpose . reverse $ maybeStacks
 
       void eol <?> "empty line"
 
