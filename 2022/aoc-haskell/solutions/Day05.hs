@@ -28,6 +28,8 @@ solution = Solution
       }
     , tests =
       [
-        "1000\n2000" :=> [(PartA, "1000"), (PartB, "2000")]
+        unlines [
+
+        ] :=> [(PartA, ""), (PartB, "")]
       ]
   }

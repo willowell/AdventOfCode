@@ -126,6 +126,7 @@ common lang
     NamedFieldPuns
     PolyKinds
     RankNTypes
+    RecordWildCards
     RoleAnnotations
     ScopedTypeVariables
     TupleSections

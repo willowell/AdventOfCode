@@ -2,14 +2,26 @@
 
 Please note that the dates are listed with most recent first.
 
+## 2022-12-04
+
+### AOC 2022
+
+#### Haskell
+
+* Implemented solutions for Days 3 and 4.
+* Actually, I implemented Day 3 on day 3, but I did not commit it yet.
+* Added a `word` parser, which parses one or more `letterChar`s from Megaparsec
+* Added the `kite` combinator, which is `flip const`.
+* Added `RecordWildCards` GHC language extension, as this allows for a shorter parser for records.
+* Greatly simplified solution for Day 2 by treating the Rock, Paper, Scissors move as a `Finite 3`, which implements modular arithmetic.
+
 ## 2022-12-02
 
 ### AOC 2022
 
 #### Haskell
 
-* Implemented solution for Day 2.
-* TBD - will fill this out more later.
+* Implemented solution for Day 2, more or less by pattern matching on the possible moves and calculating the scores from there.
 
 ### AOC 2020
 

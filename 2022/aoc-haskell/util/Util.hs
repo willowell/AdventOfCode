@@ -236,3 +236,6 @@ ascending = compare
 
 descending :: Ord a => a -> a -> Ordering
 descending = flip compare
+
+kite :: forall a b. a -> b -> b
+kite = flip const

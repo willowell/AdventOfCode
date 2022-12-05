@@ -1,91 +1,63 @@
-{-# LANGUAGE RecordWildCards #-}
 module Day02 where
 
 import AOC.Solution
 import ParsingPrelude
+import Data.Finite
 import Data.List
 import Util
 
-data Action = Rock | Paper | Scissors
+{- | Day 2: Rock Paper Scissors
 
-type Lose = Rock
-type Draw = Paper
-type Win = Scissors
+-}
 
-getActionScore Rock = 1
-getActionScore Paper = 2
-getActionScore Scissors = 3
+type Move = Finite 3
 
-data Move = Move { your :: Action, my :: Action }
+type Round = (Move, Move)
 
-getMoveScore Move {your = Rock, my = Paper}    = 6
-getMoveScore Move {your = Paper, my = Scissors}    = 6
-getMoveScore Move {your = Scissors, my = Rock}    = 6
-getMoveScore Move {your = Rock, my = Rock}    = 3
-getMoveScore Move {your = Paper, my = Paper}    = 3
-getMoveScore Move {your = Scissors, my = Scissors}    = 3
-getMoveScore Move {your = _, my = _}    = 0
-
-getMoveScore' Move {your = a, my = Paper}    = Move {your = a, my = a}
-getMoveScore' Move {your = a, my = Rock} = getLosingMove a
-getMoveScore' Move {your = a, my = Scissors} = getWinningMove a
-
-getLosingMove Rock = Move {your = Rock, my = Scissors}
-getLosingMove Paper = Move {your = Paper, my = Rock}
-getLosingMove Scissors = Move {your = Scissors, my = Paper}
-
-getWinningMove Rock = Move {your = Rock, my = Paper}
-getWinningMove Paper = Move {your = Paper, my = Scissors}
-getWinningMove Scissors = Move {your = Scissors, my = Rock}
-
-getRoundScore mv =
-  let roundScore = getMoveScore mv in
-    roundScore + (getActionScore $ my mv)
-
-getRoundScore' mv =
-  let newMove = getMoveScore' mv in
-  let roundScore = getMoveScore newMove in
-    roundScore + (getActionScore $ my newMove)
+getScore :: (Round -> Move) -> (Round -> Move) -> Round -> Integer
+getScore getShapeScore getOutcomeScore rnd
+  = getFinite (getShapeScore rnd) + 1 + getFinite (getOutcomeScore rnd) * 3
 
 solution :: Solution
-{- Parser Output Type -} [Move]
-{- Part A Output Type -} Int
-{- Part B Output Type -} Int
+{- Parser Output Type -} [Round]
+{- Part A Output Type -} Integer
+{- Part B Output Type -} Integer
 solution = Solution
   {
       {- | Input Parser
       -}
-      decodeInput = pMove `sepEndBy1` eol
-
-
+      decodeInput = pRound `sepEndBy1` eol
     , solveA = defSolver
       {
         {- | Part A Solver
         -}
-        solve = Just . sum . map getRoundScore
-
+        solve =
+          Just
+          . sum
+          . map (getScore snd (\(x, y) -> y + (1 - x)))
       }
     , solveB = defSolver
       {
         {- | Part B Solver
         -}
-        solve = Just . sum . map getRoundScore'
+        solve =
+          Just
+          . sum
+          . map (getScore (\(x, y) -> y - (1 - x)) snd)
       }
-    , tests =
-      [
-        "A Y\nB X\nC Z" :=> [(PartA, "15"), (PartB, "12")]
-      ]
+    , tests = ["A Y\nB X\nC Z" :=> [(PartA, "15"), (PartB, "12")]]
   }
   where
-    pAction = choice
+    pMove :: Parser Move
+    pMove = choice
       [
-          Rock     <$ (char 'A' <|> char 'X') <?> "rock (A/X)"
-        , Paper    <$ (char 'B' <|> char 'Y') <?> "paper (B/Y)"
-        , Scissors <$ (char 'C' <|> char 'Z') <?> "scissors (C/Z)"
+          0 <$ (char 'A' <|> char 'X') <?> "rock (A/X)"
+        , 1 <$ (char 'B' <|> char 'Y') <?> "paper (B/Y)"
+        , 2 <$ (char 'C' <|> char 'Z') <?> "scissors (C/Z)"
       ]
-    pMove = do
-      your <- pAction
+    pRound :: Parser Round
+    pRound = do
+      your <- pMove
       void space1
-      my <- pAction
-      return Move{..}
-
+      my <- pMove
+      return (your, my)

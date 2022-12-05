@@ -1,6 +1,6 @@
 module ParsingPrelude
   ( Parser
-  , chainl, noeol, singleDigit
+  , chainl, noeol, singleDigit, word
   , module Text.Megaparsec
   , module Text.Megaparsec.Char
   , module Text.Megaparsec.Char.Lexer
@@ -22,6 +22,9 @@ import Text.Megaparsec.Stream (Token)
 import Util (guarding, within)
 
 type Parser = Parsec Void String
+
+word :: Parser String
+word = some letterChar
 
 chainl :: MonadPlus m => m a -> m (a -> a -> a) -> m a
 chainl el op = do
