@@ -46,6 +46,12 @@ common deps
     -- https://hackage.haskell.org/package/finite-typelits
     , finite-typelits
 
+    -- https://hackage.haskell.org/package/hashable
+    , hashable
+
+    -- https://hackage.haskell.org/package/KMP
+    , KMP
+
     -- Lenses, Folds, and Traversals
     -- Most notably, allows for an imperative-ish interface for deeply nested structures
     -- https://hackage.haskell.org/package/lens

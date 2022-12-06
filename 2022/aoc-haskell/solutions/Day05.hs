@@ -6,20 +6,23 @@ import Data.List
 import Data.Maybe
 import Util
 
-import Debug.Trace
+type Crate = Char
+
+type Stack = (Int, [Crate])
 
 type Instruction = (Int, Int, Int)
 
-data Procedure = Procedure { stacks :: [(Int, [Char])], instructions :: [Instruction] }
+data Procedure = Procedure
+  {
+    stacks :: [Stack]
+  , instructions :: [Instruction]
+  }
 
-prettyPrintProcedure p =
-  "Stacks: `" <> (show $ stacks p) <> "`\nInstructions: `" <> (show $ instructions p) <> "`."
-
-replaceStack :: [(Int, [Char])] -> Int -> [Char] -> [(Int, [Char])]
+replaceStack :: [Stack] -> Int -> [Crate] -> [Stack]
 replaceStack stacks stack newStack = map (\s@(i, _) -> if i == stack then (i, newStack) else s) stacks
 
-rearrange :: [(Int, [Char])] -> Int -> Int -> Int -> [(Int, [Char])]
-rearrange stacks numCrates from to =
+rearrange :: [Stack] -> Int -> Int -> Int -> Bool -> [Stack]
+rearrange stacks numCrates from to reversePulled =
   let fromIndex = from - 1 in
   let toIndex = to - 1 in
 
@@ -30,28 +33,21 @@ rearrange stacks numCrates from to =
 
   let oldStack = drop numCrates $ snd fromStack in
 
-  let newStack = reverse movedCrates <> snd toStack in
+  let newStack = (if reversePulled then reverse else id) movedCrates <> snd toStack in
 
   let s = replaceStack stacks from oldStack in
 
-  trace ("INS: MOVE " <> show numCrates <> " FROM " <> show from <> " TO " <> show to)
-  traceShow fromStack
-  traceShow toStack
-  trace ("MOVED: " <> show movedCrates)
-  trace ("OLD STACK IS NOW: " <> show oldStack)
-  trace ("NEW STACK IS NOW: " <> show newStack)
-
   replaceStack s to newStack
 
-getTopCrates :: [(Int, [Char])] -> [Char]
+getTopCrates :: [Stack] -> [Crate]
 getTopCrates stacks = map head $ map snd stacks
 
-runInstructions :: Procedure -> [(Int, [Char])]
-runInstructions p =
+runInstructions :: Bool -> Procedure -> [Stack]
+runInstructions reversePulled p =
   let ins = instructions p in
   let startingStacks = stacks p in
-    foldl
-    (\curStacks (numCrates, from, to) -> rearrange curStacks numCrates from to )
+    foldl'
+    (\curStacks (numCrates, from, to) -> rearrange curStacks numCrates from to reversePulled)
     startingStacks
     ins
 
@@ -86,14 +82,14 @@ solution = Solution
       {
         {- | Part A Solver
         -}
-        solve = Just <$> getTopCrates . runInstructions
+        solve = Just <$> getTopCrates . (runInstructions True)
 
       }
     , solveB = defSolver
       {
         {- | Part B Solver
         -}
-        solve = Just . prettyPrintProcedure
+        solve = Just <$> getTopCrates . (runInstructions False)
       }
     , tests =
       [
@@ -107,18 +103,18 @@ solution = Solution
           , "move 3 from 1 to 3"
           , "move 2 from 2 to 1"
           , "move 1 from 1 to 2"
-        ] :=> [(PartA, "\"CMZ\""), (PartB, "\"foo\"")]
+        ] :=> [(PartA, "\"CMZ\""), (PartB, "\"MCD\"")]
       ]
   }
   where
-    pCrate :: Parser (Maybe Char)
+    pCrate :: Parser (Maybe Crate)
     pCrate = choice
       [
         Nothing <$ between (char ' ') (char ' ') (char ' ')
       , Just <$> between (char '[') (char ']') letterChar
       ]
 
-    pStack :: Parser [Maybe Char]
+    pStack :: Parser [Maybe Crate]
     pStack = pCrate `sepBy` (char ' ')
 
     pNumberLabels :: Parser String

@@ -14,6 +14,7 @@ import Data.Bits
 import Data.Coerce
 import Data.Foldable
 import Data.Function
+import Data.Hashable
 import Data.Maybe
 import Data.Monoid
 import Data.IORef
@@ -29,6 +30,10 @@ import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import qualified Data.Map.Lazy as LazyMap
 import qualified Data.Map.Internal as Map.Internal
+import qualified Data.HashSet as HS
+import qualified Data.List as L
+
+import qualified Data.Algorithms.KMP as KMP
 
 -- | Appropriately strict version of 'sum'.
 sum' :: (Foldable t, Num a) => t a -> a
@@ -211,6 +216,24 @@ iterateUntilAnyRepeat f start = go (LazyMap.singleton start 1) start
     go seen x = let x' = f x in case LazyMap.lookup x' seen of
       Nothing -> go (LazyMap.insert x' 1 (LazyMap.map (+1) seen)) x'
       Just !n -> (n, x)
+
+genSubstrings :: [a] -> [[a]]
+genSubstrings xs = concatMap L.inits $ L.tails xs
+
+hasKDistinct :: Eq a => Int -> [a] -> Bool
+hasKDistinct k xs = (length . L.nub) xs == k
+
+getUniqueSublistsKLength :: (Eq a, Hashable a) => Int -> [a] -> [[a]]
+getUniqueSublistsKLength k xs = filter (hasKDistinct k) $ filter ((== k) . length) $ genSubstrings xs
+
+getFirstUniqueSubstringKLength :: Int -> String -> String
+getFirstUniqueSubstringKLength k xs = head $ getUniqueSublistsKLength k xs
+
+getIndexOfFirstSubstring :: Eq a => [a] -> [a] -> Int
+getIndexOfFirstSubstring needle haystack =
+  let kmpTable = KMP.build needle in
+  let result = KMP.match kmpTable haystack in
+  head $ result
 
 bitsToBinary :: Bits a => [Bool] -> a
 bitsToBinary = go zeroBits

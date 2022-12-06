@@ -5,29 +5,45 @@ import ParsingPrelude
 import Data.List
 import Util
 
+import Debug.Trace
+
 solution :: Solution
-{- Parser Output Type -} [Int]
+{- Parser Output Type -} String
 {- Part A Output Type -} Int
 {- Part B Output Type -} Int
 solution = Solution
   {
       {- | Input Parser
       -}
-      decodeInput = decimal `sepEndBy1` eol <* eof
+      decodeInput = word
     , solveA = defSolver
       {
         {- | Part A Solver
         -}
-        solve = Just . minimum
+        solve = Just .
+          (\xs ->
+            let firstSubstr = getFirstUniqueSubstringKLength 4 xs in
+            traceShow firstSubstr
+            (+ 4) $ getIndexOfFirstSubstring firstSubstr xs
+          )
       }
     , solveB = defSolver
       {
         {- | Part B Solver
         -}
-        solve = Just . maximum
+        solve = Just .
+          (\xs ->
+            let firstSubstr = getFirstUniqueSubstringKLength 14 xs in
+            traceShow firstSubstr
+            (+ 14) $ getIndexOfFirstSubstring firstSubstr xs
+          )
       }
     , tests =
       [
-        "1000\n2000" :=> [(PartA, "1000"), (PartB, "2000")]
+        "mjqjpqmgbljsphdztnvjfqwrcgsmlb"    :=> [(PartA, "7"), (PartB, "19")]
+      , "bvwbjplbgvbhsrlpgdmjqwftvncz"      :=> [(PartA, "5"), (PartB, "23")]
+      , "nppdvjthqldpwncqszvftbrmjlhg"      :=> [(PartA, "6"), (PartB, "23")]
+      , "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg" :=> [(PartA, "10"), (PartB, "29")]
+      , "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"  :=> [(PartA, "11"), (PartB, "26")]
       ]
   }
